@@ -17,7 +17,8 @@ class CaveState extends FlxState
 
     private function createMap():Void
     {
-        _caveGen = new CaveGenerator(320, 180, 45);
+        // _caveGen = new CaveGenerator(320, 180, 45);
+        _caveGen = new CaveGenerator(80, 45, 45);
         var mapData:String = _caveGen.generate();
 
         // Loads tilemap of tilesize 16x16

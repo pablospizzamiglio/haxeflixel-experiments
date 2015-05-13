@@ -55,23 +55,6 @@ class CaveGenerator
         return cave;
     }
 
-    private function isOutOfBounds(row:Int, column:Int):Bool
-    {
-        return row < 0 || row > _maxRows - 1 || column < 0 || column > _maxColumns - 1;
-    }
-
-    private function isWall(row:Int, column:Int):Bool
-    {
-        var isWall:Bool = false;
-
-        if (isOutOfBounds(row, column) || _cave[row][column])
-        {
-            isWall = true;
-        }
-
-        return isWall;
-    }
-
     private function getTileIndex(isWall:Bool):Int
     {
         var tileIndex:Int = 11; // Floor
@@ -107,6 +90,23 @@ class CaveGenerator
         return caveData;
     }
 
+    private function isOutOfBounds(row:Int, column:Int):Bool
+    {
+        return (row < 0 || row > (_maxRows - 1) || column < 0 || column > (_maxColumns - 1));
+    }
+
+    private function isWall(row:Int, column:Int):Bool
+    {
+        var isWall:Bool = false;
+
+        if (isOutOfBounds(row, column) || _cave[row][column])
+        {
+            isWall = true;
+        }
+
+        return isWall;
+    }
+
     private function countAdjacentWalls(currentRow:Int, currentColumn:Int):Int
     {
         var startingRow:Int = currentRow - 1;
@@ -120,7 +120,7 @@ class CaveGenerator
         {
             for (column in startingColumn...endingColumn)
             {
-                if (!(row == currentRow && column == currentColumn))
+                if (row != currentRow && column != currentColumn)
                 {
                     if (isWall(row, column)) wallCount++;
                 }
@@ -132,40 +132,33 @@ class CaveGenerator
 
     public function softenCave():Void
     {
+        var softCave:Array<Array<Bool>> = zeroFillMatrix();
+
         for (row in 0..._maxRows)
         {
             for (column in 0..._maxColumns)
             {
                 var wallCount:Int = countAdjacentWalls(row, column);
 
-                if (wallCount <= 3)
+                if (wallCount >= 5)
                 {
-                    _cave[row][column] = FLOOR_TILE;
+                    softCave[row][column] = WALL_TILE;
+                    //_cave[row][column] = WALL_TILE;
                 }
-                else if (wallCount > 5)
+                else
                 {
-                    _cave[row][column] = WALL_TILE;
+                    softCave[row][column] = FLOOR_TILE;
+                    //_cave[row][column] = FLOOR_TILE;
                 }
-
-                // if (_cave[row][column] && wallCount < 2)
-                // {
-                //     _cave[row][column] = FLOOR_TILE;
-                // }
-                // else if (!_cave[row][column] && wallCount >= 5)
-                // {
-                //     _cave[row][column] = WALL_TILE;
-                // }
-                // else
-                // {
-                //     _cave[row][column] = FLOOR_TILE;
-                // }
             }
         }
+
+        _cave = softCave;
     }
 
     public function generate():String
     {
-        //softenCave();
+        softenCave();
 
         return generateCaveData();
     }
