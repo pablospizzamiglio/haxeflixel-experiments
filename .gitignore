@@ -1,0 +1,11 @@
+.DS_Store
+
+## IDEs
+.idea/workspace.xml
+*.sublime-workspace
+*.sublime-project
+
+/build
+/export/
+/report/
+/assets/data/*.hash
