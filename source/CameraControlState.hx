@@ -26,10 +26,9 @@ class CameraControlState extends FlxState
         super.create();
 
         map = new FlxTilemap();
-        var mapData:String = Assets.getText("assets/data/map-data.csv");
-        var mapImage:String = "assets/images/basictiles_2.png";
+        var mapData:String = Assets.getText(AssetPaths.map_data__csv);
+        var mapImage:String = AssetPaths.basictiles_2__png;
         map.loadMap(mapData, mapImage, 16, 16);
-
         add(map);
 
         // Note: tile 99 is going to be our player object
@@ -41,7 +40,6 @@ class CameraControlState extends FlxState
         // index is 0, so we reset it back to 99 (the player's tile image)
         player.loadGraphic(mapImage, false, 16, 16);
         player.animation.frameIndex = 99;
-
         add(player);
 
         // Reset the tile under the player to "11", the grass tile

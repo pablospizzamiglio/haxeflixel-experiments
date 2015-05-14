@@ -34,6 +34,4 @@ class Reg
 	 * Especially useful for setting up multiple save slots.
 	 */
 	public static var saves:Array<FlxSave> = [];
-
-	public static var tileSet:String = "assets/images/basictiles_2.png";
 }
