@@ -17,7 +17,6 @@ class CaveGenerator
         _width = width;
         _wallSpawningChance = wallSpawningChance;
         _maxCycles = maxCycles;
-        _cave = initializeCave();
     }
 
     private function zeroFillMatrix():Array<Array<Bool>>
@@ -179,6 +178,7 @@ class CaveGenerator
 
     public function generate():String
     {
+        _cave = initializeCave();
         applyAutomaton(_maxCycles);
         applyAutomaton2(_maxCycles - 1);
 

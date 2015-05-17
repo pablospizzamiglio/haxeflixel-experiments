@@ -1,14 +1,12 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.util.FlxMath;
+import flixel.util.FlxDestroyUtil;
 
 using flixel.util.FlxSpriteUtil;
-import flixel.util.FlxDestroyUtil;
+
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -17,6 +15,8 @@ class MenuState extends FlxState
 {
     private var _cameraControlStateButton:FlxButton;
     private var _caveStateButton:FlxButton;
+    private var _dungeonStateButton:FlxButton;
+
     /**
      * Function that is called up when to state is created to set it up.
      */
@@ -24,13 +24,17 @@ class MenuState extends FlxState
     {
         super.create();
 
-        _cameraControlStateButton = new FlxButton(50, 50, "Camera", switchToCameraControlState);
+        // _cameraControlStateButton = new FlxButton(50, 50, "Camera", switchToCameraControlState);
         // _cameraControlStateButton.screenCenter();
-        add(_cameraControlStateButton);
+        // add(_cameraControlStateButton);
 
         _caveStateButton = new FlxButton(50, 70, "Cave", switchToCaveState);
         // _caveStateButton.screenCenter();
         add(_caveStateButton);
+
+        _dungeonStateButton = new FlxButton(50, 90, "Dungeon", switchToDungeonState);
+        // _dungeonStateButton.screenCenter();
+        add(_dungeonStateButton);
     }
 
     private function switchToCameraControlState():Void
@@ -43,6 +47,11 @@ class MenuState extends FlxState
         FlxG.switchState(new CaveState());
     }
 
+    private function switchToDungeonState():Void
+    {
+        FlxG.switchState(new DungeonState());
+    }
+
     /**
      * Function that is called when this state is destroyed - you might want to
      * consider setting all objects this state uses to null to help garbage collection.
@@ -52,6 +61,7 @@ class MenuState extends FlxState
         super.destroy();
         _cameraControlStateButton = FlxDestroyUtil.destroy(_cameraControlStateButton);
         _caveStateButton = FlxDestroyUtil.destroy(_caveStateButton);
+        _dungeonStateButton = FlxDestroyUtil.destroy(_dungeonStateButton);
     }
 
     /**
