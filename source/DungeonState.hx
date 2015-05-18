@@ -11,29 +11,29 @@ import flixel.util.FlxSpriteUtil;
 class DungeonState extends FlxState
 {
     var _dungeonTree:Node;
-    var _rooms:Array<FlxSprite>;
-    var _rooms2:Array<FlxSprite>;
+    var _rooms:Array<Room>;
 
     override public function create():Void
     {
         super.create();
 
-        // _dungeonTree = new Node(640, 360);
-
-        _dungeonTree = createTree(640, 360);
+        _dungeonTree = createTree(80, 45);
         _rooms = createRooms(_dungeonTree);
 
-        FlxG.log.add(_dungeonTree.size());
-        FlxG.log.add(_rooms.length);
+        FlxG.log.add("_dungeonTree.size() = " + _dungeonTree.size());
+        FlxG.log.add("_dungeonTree.countLeaves() = " + _dungeonTree.countLeaves());
+        FlxG.log.add("_dungeonTree.countNodes() = " + _dungeonTree.countNodes());
+        FlxG.log.add("_dungeonTree.depth() = " + _dungeonTree.depth());
+        FlxG.log.add("_rooms.length = " + _rooms.length);
 
-        var lineStyle:LineStyle = { color: FlxColor.BLACK, thickness: 2 };
-
-        for (r in _rooms)
+        for (room in _rooms)
         {
-            FlxG.log.add(r.x + " " + r.y + " -- " + r.width + " " + r.height);
+            var sRoom = new FlxSprite();
+            sRoom.makeGraphic(room.width * 8, room.height * 8, FlxColor.WHITE);
+            sRoom.x = room.x * 8;
+            sRoom.y = room.y * 8;
 
-            add(r);
-            //add(FlxSpriteUtil.drawRect(r, r.x, r.y, r.width - 1, r.height - 1, FlxColor.WHITE));
+            add(sRoom);
         }
     }
 
@@ -65,13 +65,13 @@ class DungeonState extends FlxState
 
             if (isVertical)
             {
-                var newWidth = Std.int(FlxRandom.floatRanged(tree.width * 0.4, tree.width * 0.6));
+                var newWidth = Std.int(FlxRandom.floatRanged(tree.width * 0.35, tree.width * 0.55));
                 tree.left = createTree(newWidth, height, x, y, tree);
                 tree.right = createTree(width - newWidth, height, x + newWidth, y, tree);
             }
             else
             {
-                var newHeight = Std.int(FlxRandom.floatRanged(tree.height * 0.4, tree.height * 0.6));
+                var newHeight = Std.int(FlxRandom.floatRanged(tree.height * 0.35, tree.height * 0.55));
                 tree.left = createTree(width, newHeight, x, y, tree);
                 tree.right = createTree(width, height - newHeight, x, y + newHeight, tree);
             }
@@ -80,24 +80,19 @@ class DungeonState extends FlxState
         return tree;
     }
 
-    public function createRooms(tree:Node):Array<FlxSprite>
+    public function createRooms(tree:Node):Array<Room>
     {
-        var rooms:Array<FlxSprite> = new Array<FlxSprite>();
+        var rooms:Array<Room> = new Array<Room>();
 
         if (tree.isLeaf())
         {
+            var width = Std.int(FlxRandom.floatRanged(tree.width * 0.45, tree.width * 0.85));
+            var height = Std.int(FlxRandom.floatRanged(tree.height * 0.45, tree.height * 0.85));
+            var x = tree.x + Std.int(FlxRandom.floatRanged(1, tree.width - width - 1));
+            var y = tree.y + Std.int(FlxRandom.floatRanged(1, tree.height - height - 1));
 
-            var w = FlxRandom.intRanged(30, tree.width - 10);
-            var h = FlxRandom.intRanged(30, tree.height - 10);
-            var x = FlxRandom.intRanged(1, tree.width - w - 10);
-            var y = FlxRandom.intRanged(1, tree.height - h - 10);
-
-            var r = new FlxSprite();
-            r.makeGraphic(tree.width - 2, tree.height - 2, FlxColor.WHITE);
-            r.x = tree.x + 1;
-            r.y = tree.y + 1;
-
-            rooms.push(r);
+            tree.room = new Room(x, y, width, height);
+            rooms.push(tree.room);
         }
         else
         {
@@ -106,5 +101,10 @@ class DungeonState extends FlxState
         }
 
         return rooms;
+    }
+
+    public function connectRooms(tree:Node):Void
+    {
+
     }
 }

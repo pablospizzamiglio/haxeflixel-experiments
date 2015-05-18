@@ -1,18 +1,18 @@
 
 package ;
 
-import flash.display.Sprite;
-
-class Room extends Sprite
+class Room
 {
-    // var width:Int;
-    // var height:Int;
+    public var x:Int;
+    public var y:Int;
+    public var width:Int;
+    public var height:Int;
 
-    public function new(w:Int, h:Int, x:Int, y:Int)
+    public function new(x, y, width, height)
     {
-        super();
-        this.graphics.beginFill(0xffffff);
-        this.graphics.drawRect(x, y, w, h);
-        this.graphics.endFill();
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 }
