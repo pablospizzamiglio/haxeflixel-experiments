@@ -6,6 +6,6 @@
 *.sublime-project
 
 /build
-/export/
+# /export/
 /report/
 /assets/data/*.hash
